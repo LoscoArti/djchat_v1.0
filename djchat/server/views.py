@@ -8,6 +8,17 @@ from .serializer import ServerSerializer
 
 
 class ServerListViewSet(viewsets.ViewSet):
+    """
+    A viewset for listing servers with optional filtering by category, user, server id, and number of members.
+
+    Supported query parameters:
+    - category: filter servers by category name
+    - qty: limit the number of servers returned
+    - by_user: filter servers by the authenticated user
+    - by_serverid: filter servers by server id
+    - with_num_members: include the number of members in each server object
+    """
+
     queryset = Server.objects.all()
 
     def list(self, request):
