@@ -2,9 +2,14 @@ from django.conf import settings
 from django.db import models
 
 
+def category_icon_upload_path(instance, filename):
+    return f"category/{instance.id}/category_icon/{filename}"
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
+    icon = models.FileField(upload_to=category_icon_upload_path, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -22,7 +27,7 @@ class Server(models.Model):
     member = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def __str__(self):
-        return f"{self.name} id({self.id})"
+        return f"{self.name} id({self.pk})"
 
 
 class Channel(models.Model):
