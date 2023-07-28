@@ -27,7 +27,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-export const createMuiTheme = () => {
+export const createMuiTheme = (mode: "light" | "dark") => {
   let theme = createTheme({
     typography: {
       fontFamily: ["IBM Plex Sans", "sans-serif"].join(","),
@@ -50,6 +50,9 @@ export const createMuiTheme = () => {
     },
     secondaryDraw: {
       width: 240,
+    },
+    palette: {
+      mode,
     },
     components: {
       MuiAppBar: {
