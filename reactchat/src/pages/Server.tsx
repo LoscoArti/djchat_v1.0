@@ -1,42 +1,63 @@
-import { useState } from "react";
-import useWebSocket from "react-use-websocket";
-
-const socketUrl = "ws://127.0.0.1:8000/ws/test";
+// import { Css } from "@mui/icons-material";
+import { Box, CssBaseline } from "@mui/material";
+import PrimaryAppBar from "./templates/PrimaryAppBar";
+import PrimaryDraw from "./templates/PrimaryDraw";
+import SecondaryDraw from "./templates/SecondaryDraw";
+import Main from "./templates/Main";
+import MessageInterface from "../components/Main/MessageInterface";
+import ServerChannels from "../components/SecondaryDraw/ServerChannels";
+import UserServers from "../components/PrimaryDraw/UserServers";
+import { useNavigate, useParams } from "react-router-dom";
+import useCrud from "../hooks/useCrud";
+import { Server } from "../@types/server.d";
+import { useEffect } from "react";
 
 const Server = () => {
-  const [message, setMessage] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const { sendJsonMessage } = useWebSocket(socketUrl, {
-    onOpen: () => {
-      console.log("connected!");
-    },
-    onClose: () => {
-      console.log("closed!");
-    },
-    onError: () => {
-      console.log("error!");
-    },
-    onMessage: (msg) => {
-      setMessage(msg.data);
-    },
-  });
+  const navigate = useNavigate();
+  const { serverId, channelId } = useParams();
 
-  const sendInputValue = () => {
-    const message = { text: inputValue };
-    sendJsonMessage(message);
-    setInputValue("");
-  };
+  const { dataCRUD, error, isLoading, fetchData } = useCrud<Server>(
+    [],
+    `/server/select/?by_serverid=${serverId}`
+  );
+
+  if (error !== null && error.message === "400") {
+    navigate("/");
+    return null;
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // // Check if the channelId is validby searching for it in the data fetch from the API
+  // const isChannel = ():Boolean => {
+  //   if (!channelId) {
+  //     return true;
+  //   }
+
+  //   return dataCRUD.some((server) =>
+  //     server.channel_server.some(
+  //       (channel) => channel.id === parseInt(channelId)
+  //     )
+  //   );
+  //   };
+  // };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button onClick={sendInputValue}>Send</button>
-      <div>Recieved data: {message}</div>
-    </div>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <PrimaryAppBar />
+      <PrimaryDraw>
+        <UserServers open={false} data={dataCRUD} />
+      </PrimaryDraw>
+      <SecondaryDraw>
+        <ServerChannels />
+      </SecondaryDraw>
+      <Main>
+        <MessageInterface />
+      </Main>
+    </Box>
   );
 };
 export default Server;
