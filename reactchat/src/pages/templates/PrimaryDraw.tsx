@@ -1,15 +1,16 @@
-import { Box, useMediaQuery } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { easing, styled, useTheme } from "@mui/material/styles";
-import DrowerToggle from "../../components/PrimaryDraw/DrawToggle";
+import { Box, useMediaQuery, styled } from "@mui/material";
+import { useEffect, useState, ReactNode } from "react";
+import { useTheme } from "@mui/material/styles";
+import DrawerToggle from "../../components/PrimaryDraw/DrawToggle";
 import MuiDrawer from "@mui/material/Drawer";
+import React from "react";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 type ChildProps = {
-  open: boolean;
+  open: Boolean;
 };
 
 type ChildElement = React.ReactElement<ChildProps>;
@@ -87,7 +88,7 @@ const PrimaryDraw: React.FC<Props> = ({ children }) => {
             width: open ? "auto" : "100%",
           }}
         >
-          <DrowerToggle
+          <DrawerToggle
             open={open}
             handleDrawerClose={handleDrawerClose}
             handleDrawerOpen={handleDrawerOpen}

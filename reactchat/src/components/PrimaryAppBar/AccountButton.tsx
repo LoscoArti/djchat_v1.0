@@ -1,11 +1,10 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
-import { Box } from "@mui/system";
 import DarkModeSwitch from "./DarkMode/DarkModeSwitch";
-import React from "react";
+import { useState } from "react";
 
 const AccountButton = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -40,5 +39,4 @@ const AccountButton = () => {
     </Box>
   );
 };
-
 export default AccountButton;

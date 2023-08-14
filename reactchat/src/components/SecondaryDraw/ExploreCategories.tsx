@@ -1,17 +1,17 @@
 import {
   List,
   ListItem,
-  ListItemIcon,
-  ListItemText,
   ListItemButton,
-  ListItemAvatar,
+  ListItemText,
   Box,
   useTheme,
+  ListItemIcon,
   Typography,
 } from "@mui/material";
 import useCrud from "../../hooks/useCrud";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 import { MEDIA_URL } from "../../config";
 
 interface Category {
@@ -65,7 +65,7 @@ const ExploreCategories = () => {
                 <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
                   <ListItemAvatar sx={{ minWidth: "0px" }}>
                     <img
-                      alt="server icon"
+                      alt="server Icon"
                       src={`${MEDIA_URL}${item.icon}`}
                       style={{
                         width: "25px",

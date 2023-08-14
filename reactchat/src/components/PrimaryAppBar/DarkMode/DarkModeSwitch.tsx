@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { ColorModeContext } from "../../../context/DarkModeContext";
 import { useTheme } from "@mui/material/styles";
 import { IconButton, Typography } from "@mui/material";
@@ -22,7 +21,7 @@ const DarkModeSwitch = () => {
         color="inherit"
       >
         {theme.palette.mode === "dark" ? (
-          <ToggleOffIcon sx={{ fontSize: "2.5rem" }} />
+          <ToggleOffIcon sx={{ fontSize: "2.5rem", p: 0 }} />
         ) : (
           <ToggleOnIcon sx={{ fontSize: "2.5rem" }} />
         )}
@@ -30,5 +29,4 @@ const DarkModeSwitch = () => {
     </>
   );
 };
-
 export default DarkModeSwitch;

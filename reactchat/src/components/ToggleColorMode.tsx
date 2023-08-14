@@ -10,6 +10,7 @@ interface ToggleColorModeProps {
 }
 
 const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ children }) => {
+  
   const storedMode = Cookies.get("colorMode") as "light" | "dark";
   const preferedDarkMode = useMediaQuery("([prefers-color-scheme: dark])");
   const defaultMode = storedMode || (preferedDarkMode ? "dark" : "light");

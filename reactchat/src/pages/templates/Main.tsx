@@ -21,5 +21,4 @@ const Main: React.FC<Props> = ({ children }) => {
     </Box>
   );
 };
-
 export default Main;

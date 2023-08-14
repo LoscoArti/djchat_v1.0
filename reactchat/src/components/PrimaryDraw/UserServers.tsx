@@ -6,9 +6,9 @@ import {
   ListItemText,
   Box,
   Typography,
-  Avatar,
 } from "@mui/material";
-import { ListItemAvatar } from "@mui/material";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
 import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
 
@@ -20,7 +20,7 @@ interface Server {
 }
 
 interface ServerChannelsProps {
-  open: Server[];
+  data: Server[];
 }
 
 type Props = {
@@ -35,7 +35,7 @@ const UserServers: React.FC<Props & ServerChannelsProps> = ({ open, data }) => {
           height: 50,
           p: 2,
           display: "flex",
-          alighItems: "center",
+          alignItems: "center",
           flex: "1 1 100%",
         }}
       >
@@ -96,7 +96,7 @@ const UserServers: React.FC<Props & ServerChannelsProps> = ({ open, data }) => {
                     sx: {
                       textOverflow: "ellipsis",
                       overflow: "hidden",
-                      whiteSpace: "nowrap",
+                      whitespace: "nowrap",
                     },
                   }}
                 />
@@ -108,5 +108,4 @@ const UserServers: React.FC<Props & ServerChannelsProps> = ({ open, data }) => {
     </>
   );
 };
-
 export default UserServers;

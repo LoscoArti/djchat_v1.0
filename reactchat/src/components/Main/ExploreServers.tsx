@@ -1,22 +1,21 @@
 import {
   List,
   ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   Box,
   Typography,
-  Avatar,
-  Container,
-  Grid,
-  CardMedia,
-  Card,
-  CardContent,
 } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
 import { useParams } from "react-router-dom";
 import useCrud from "../../hooks/useCrud";
 import { useEffect } from "react";
-import { ListItemAvatar } from "@mui/material";
 import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
 

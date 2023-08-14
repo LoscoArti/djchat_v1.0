@@ -6,11 +6,11 @@ import {
   ListItemText,
   Box,
   Typography,
-  Avatar,
 } from "@mui/material";
 import useCrud from "../../hooks/useCrud";
 import { useEffect } from "react";
-import { ListItemAvatar } from "@mui/material";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
 import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
 
@@ -31,15 +31,9 @@ const PopularChannels: React.FC<Props> = ({ open }) => {
     "/server/select/"
   );
 
-  console.log(isLoading);
-
   useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log(dataCRUD);
-  }, [dataCRUD]);
 
   return (
     <>
@@ -48,7 +42,7 @@ const PopularChannels: React.FC<Props> = ({ open }) => {
           height: 50,
           p: 2,
           display: "flex",
-          alighItems: "center",
+          alignItems: "center",
           flex: "1 1 100%",
         }}
       >
@@ -109,7 +103,7 @@ const PopularChannels: React.FC<Props> = ({ open }) => {
                     sx: {
                       textOverflow: "ellipsis",
                       overflow: "hidden",
-                      whiteSpace: "nowrap",
+                      whitespace: "nowrap",
                     },
                   }}
                 />
@@ -121,5 +115,4 @@ const PopularChannels: React.FC<Props> = ({ open }) => {
     </>
   );
 };
-
 export default PopularChannels;

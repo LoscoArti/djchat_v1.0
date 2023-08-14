@@ -26,23 +26,23 @@ const PrimaryAppBar = () => {
     }
   }, [isSmallScreen]);
 
-  const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event &&
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
-    setSideMenu((prevSideMenu) => !prevSideMenu);
-  };
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+      setSideMenu(open);
+    };
 
   const list = () => (
     <Box
       sx={{ paddingTop: `${theme.primaryAppBar.height}px`, minWidth: 200 }}
-      role="presentation"
-      onClick={toggleDrawer}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
     >
       <ExploreCategories />
     </Box>
@@ -68,14 +68,14 @@ const PrimaryAppBar = () => {
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={toggleDrawer}
+            onClick={toggleDrawer(true)}
             sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
         </Box>
 
-        <Drawer anchor="left" open={sideMenu} onClose={toggleDrawer}>
+        <Drawer anchor="left" open={sideMenu} onClose={toggleDrawer(false)}>
           {list()}
         </Drawer>
 

@@ -1,4 +1,3 @@
-// import { Css } from "@mui/icons-material";
 import { Box, CssBaseline } from "@mui/material";
 import PrimaryAppBar from "./templates/PrimaryAppBar";
 import PrimaryDraw from "./templates/PrimaryDraw";
@@ -7,9 +6,9 @@ import Main from "./templates/Main";
 import MessageInterface from "../components/Main/MessageInterface";
 import ServerChannels from "../components/SecondaryDraw/ServerChannels";
 import UserServers from "../components/PrimaryDraw/UserServers";
-import { useNavigate, useParams } from "react-router-dom";
-import useCrud from "../hooks/useCrud";
+import { useParams, useNavigate } from "react-router-dom";
 import { Server } from "../@types/server.d";
+import useCrud from "../hooks/useCrud";
 import { useEffect } from "react";
 
 const Server = () => {
@@ -30,19 +29,24 @@ const Server = () => {
     fetchData();
   }, []);
 
-  // // Check if the channelId is validby searching for it in the data fetch from the API
-  // const isChannel = ():Boolean => {
-  //   if (!channelId) {
-  //     return true;
-  //   }
+  // Check if the channelId is valid by searching for it in the data fetched from the API
+  const isChannel = (): Boolean => {
+    if (!channelId) {
+      return true;
+    }
 
-  //   return dataCRUD.some((server) =>
-  //     server.channel_server.some(
-  //       (channel) => channel.id === parseInt(channelId)
-  //     )
-  //   );
-  //   };
-  // };
+    return dataCRUD.some((server) =>
+      server.channel_server.some(
+        (channel) => channel.id === parseInt(channelId)
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (!isChannel()) {
+      navigate(`/server/${serverId}`);
+    }
+  }, [isChannel, channelId]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -52,7 +56,7 @@ const Server = () => {
         <UserServers open={false} data={dataCRUD} />
       </PrimaryDraw>
       <SecondaryDraw>
-        <ServerChannels />
+        <ServerChannels data={dataCRUD} />
       </SecondaryDraw>
       <Main>
         <MessageInterface />
