@@ -1,12 +1,52 @@
 from django.conf import settings
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .models import Account
 from .schemas import user_list_docs
-from .serializers import AccountSerializer, CustomTokenObtainPairSerializer, JWTCookieTokenRefreshSerializer
+from .serializers import (
+    AccountSerializer,
+    CustomTokenObtainPairSerializer,
+    JWTCookieTokenRefreshSerializer,
+    RegisterSerializer,
+)
+
+
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data["username"]
+
+            forbidden_usernames = ["admin", "root", "superuser"]
+            if username in forbidden_usernames:
+                return Response(
+                    {"error": "Username not allowed"}, status=status.HTTP_409_CONFLICT
+                )
+
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        errors = serializer.errors
+        if "username" in errors and "non_field_errors" not in errors:
+            return Response(
+                {"error": "Username already exists"}, status=status.HTTP_409_CONFLICT
+            )
+
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogOutAPIView(APIView):
+    def post(self, request, format=None):
+        response = Response("Logged out successfully")
+
+        response.set_cookie("refresh_token", "", expires=0)
+        response.set_cookie("access_token", "", expires=0)
+
+        return response
 
 
 class AccountViewSet(viewsets.ViewSet):

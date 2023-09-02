@@ -10,6 +10,16 @@ from .schema import server_list_docs
 from .serializer import CategorySerializer, ServerSerializer
 
 
+class ServerMemebershipViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, server_id):
+        pass
+
+    def destroy(self, request, server_id):
+        pass
+
+
 class CategoryListViewSet(viewsets.ViewSet):
     queryset = Category.objects.all()
 
