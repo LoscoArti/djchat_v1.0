@@ -8,6 +8,8 @@ import { AuthServiceProvider } from "./context/AuthContext";
 import TestLogin from "./pages/TestLogin";
 import ProtectedRoute from "./services/ProtectedRoute";
 import Register from "./pages/Register";
+import { MembershipProvider } from "./context/MemberContext";
+import MembershipCheck from "./components/Membership/MembershipCheck";
 
 const App = () => {
   return (
@@ -20,7 +22,11 @@ const App = () => {
               path="/server/:serverId/:channelId?"
               element={
                 <ProtectedRoute>
-                  <Server />
+                  <MembershipProvider>
+                    <MembershipCheck>
+                      <Server />
+                    </MembershipCheck>
+                  </MembershipProvider>
                 </ProtectedRoute>
               }
             />

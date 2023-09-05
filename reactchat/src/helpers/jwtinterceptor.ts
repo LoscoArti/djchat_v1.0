@@ -31,6 +31,7 @@ const useAxiosWithJwtInterceptor = () => {
           }
         
       }
+      return Promise.reject(error);
     }
   );
   return jwtAxios;

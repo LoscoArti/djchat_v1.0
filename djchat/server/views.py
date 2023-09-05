@@ -1,6 +1,8 @@
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -14,10 +16,51 @@ class ServerMemebershipViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request, server_id):
-        pass
+        server = get_object_or_404(Server, id=server_id)
+        user = request.user
 
-    def destroy(self, request, server_id):
-        pass
+        if server.member.filter(id=user.id).exists():
+            return Response(
+                {"error": "User is already a member of this server"},
+                status=status.HTTP_409_CONFLICT,
+            )
+
+        server.member.add(user)
+
+        return Response(
+            {"message": "User joined the server seccessfully"},
+            status=status.HTTP_201_CREATED,
+        )
+
+    @action(detail=False, methods=["DELETE"])
+    def remove_member(self, request, server_id):
+        server = get_object_or_404(Server, id=server_id)
+        user = request.user
+
+        if not server.member.filter(id=user.id):
+            return Response(
+                {"error": "User is not a member of this server"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if server.owner == user:
+            return Response(
+                {"error": "Owners cannot be removed frome as a member"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        server.member.remove(user)
+
+        return Response({"message": "User removed from the server seccessfully"})
+
+    @action(detail=False, methods=["GET"])
+    def is_member(self, request, server_id=None):
+        server = get_object_or_404(Server, id=server_id)
+        user = request.user
+
+        is_member = server.member.filter(id=user.id).exists()
+
+        return Response({"is_member": is_member})
 
 
 class CategoryListViewSet(viewsets.ViewSet):
@@ -97,12 +140,16 @@ class ServerListViewSet(viewsets.ViewSet):
             try:
                 self.queryset = self.queryset.filter(id=by_serverid)
                 if not self.queryset.exists():
-                    raise ValidationError(detail=f"Server with id {by_serverid} not found")
+                    raise ValidationError(
+                        detail=f"Server with id {by_serverid} not found"
+                    )
             except ValueError:
                 raise ValidationError(detail="Server value error")
 
         if qty:
             self.queryset = self.queryset[: int(qty)]
 
-        serializer = ServerSerializer(self.queryset, many=True, context={"num_members": with_num_members})
+        serializer = ServerSerializer(
+            self.queryset, many=True, context={"num_members": with_num_members}
+        )
         return Response(serializer.data)
