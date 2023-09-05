@@ -11,16 +11,16 @@ const JoinServerButton = () => {
       await joinServer(Number(serverId));
       console.log("User has joined server");
     } catch (error) {
-      console.log("Error joining server", error);
+      console.log("Error joining", error);
     }
   };
 
   const handleLeaveServer = async () => {
     try {
       await leaveServer(Number(serverId));
-      console.log("User has left the server seccessfully");
+      console.log("User has left the server successfully!");
     } catch (error) {
-      console.log("Error leaving the server", error);
+      console.error("Error leaving the server:");
     }
   };
 
@@ -29,11 +29,12 @@ const JoinServerButton = () => {
   }
 
   // if (error) {
-  //   return <div>{error.message}</div>;
+  //   return <div>Error: {error.message}</div>;
   // }
 
   return (
     <>
+      ismember: {isUserMember.toString()}
       {isUserMember ? (
         <button onClick={handleLeaveServer}>Leave Server</button>
       ) : (
@@ -42,5 +43,4 @@ const JoinServerButton = () => {
     </>
   );
 };
-
 export default JoinServerButton;

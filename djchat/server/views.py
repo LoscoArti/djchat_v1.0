@@ -17,41 +17,30 @@ class ServerMemebershipViewSet(viewsets.ViewSet):
 
     def create(self, request, server_id):
         server = get_object_or_404(Server, id=server_id)
+
         user = request.user
 
         if server.member.filter(id=user.id).exists():
-            return Response(
-                {"error": "User is already a member of this server"},
-                status=status.HTTP_409_CONFLICT,
-            )
+            return Response({"error": "User is already a member"}, status=status.HTTP_409_CONFLICT)
 
         server.member.add(user)
 
-        return Response(
-            {"message": "User joined the server seccessfully"},
-            status=status.HTTP_201_CREATED,
-        )
+        return Response({"message": "User joined server successfully"}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["DELETE"])
     def remove_member(self, request, server_id):
         server = get_object_or_404(Server, id=server_id)
         user = request.user
 
-        if not server.member.filter(id=user.id):
-            return Response(
-                {"error": "User is not a member of this server"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
+        if not server.member.filter(id=user.id).exists():
+            return Response({"error": "User is not a member"}, status=status.HTTP_404_NOT_FOUND)
 
         if server.owner == user:
-            return Response(
-                {"error": "Owners cannot be removed frome as a member"},
-                status=status.HTTP_403_FORBIDDEN,
-            )
+            return Response({"error": "Owners cannot be removed as a member"}, status=status.HTTP_409_CONFLICT)
 
         server.member.remove(user)
 
-        return Response({"message": "User removed from the server seccessfully"})
+        return Response({"message": "User removed from server..."}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["GET"])
     def is_member(self, request, server_id=None):
@@ -140,16 +129,12 @@ class ServerListViewSet(viewsets.ViewSet):
             try:
                 self.queryset = self.queryset.filter(id=by_serverid)
                 if not self.queryset.exists():
-                    raise ValidationError(
-                        detail=f"Server with id {by_serverid} not found"
-                    )
+                    raise ValidationError(detail=f"Server with id {by_serverid} not found")
             except ValueError:
                 raise ValidationError(detail="Server value error")
 
         if qty:
             self.queryset = self.queryset[: int(qty)]
 
-        serializer = ServerSerializer(
-            self.queryset, many=True, context={"num_members": with_num_members}
-        )
+        serializer = ServerSerializer(self.queryset, many=True, context={"num_members": with_num_members})
         return Response(serializer.data)

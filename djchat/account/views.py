@@ -22,19 +22,15 @@ class RegisterView(APIView):
             username = serializer.validated_data["username"]
 
             forbidden_usernames = ["admin", "root", "superuser"]
-            if username in forbidden_usernames:
-                return Response(
-                    {"error": "Username not allowed"}, status=status.HTTP_409_CONFLICT
-                )
+            if username is forbidden_usernames:
+                return Response({"error": "Username not allowed"}, status=status.HTTP_409_CONFLICT)
 
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         errors = serializer.errors
         if "username" in errors and "non_field_errors" not in errors:
-            return Response(
-                {"error": "Username already exists"}, status=status.HTTP_409_CONFLICT
-            )
+            return Response({"error": "Username already exists"}, status=status.HTTP_409_CONFLICT)
 
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 

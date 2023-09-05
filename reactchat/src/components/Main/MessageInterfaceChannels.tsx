@@ -15,9 +15,8 @@ import { Server } from "../../@types/server.d";
 import { useParams } from "react-router-dom";
 import ServerChannels from "../SecondaryDraw/ServerChannels";
 import { useEffect, useState } from "react";
-import JoinServerButton from "../Membership/JoinServerButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import JoinServerButton from "../Membership/JoinServerButton";
 interface ServerChannelProps {
   data: Server[];
 }
