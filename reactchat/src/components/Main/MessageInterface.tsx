@@ -173,6 +173,7 @@ const messageInterface = (props: ServerChannelProps) => {
               </List>
             </Scroll>
           </Box>
+          
           <Box sx={{ position: "sticky", bottom: 0, width: "100%" }}>
             <form
               onSubmit={handleSubmit}
